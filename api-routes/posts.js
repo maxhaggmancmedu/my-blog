@@ -1,13 +1,61 @@
-export const getPosts = () => {
-  //Handle get all posts
+import { supabase } from '@/lib/supabaseClient'
+
+export const getPosts = async () => {
+  const { data, error, status } = await supabase
+  .from('posts')
+  .select()
+
+  if (error) {
+    console.log(error, status)
+  }
+
+  console.log({data})  
+  return { data, error, status };
 };
 
-export const addPost = () => {
-  //Handle add post here
+export const getPost = async ({ slug }) => {
+  const { data, error, status } = await supabase
+  .from('posts')
+  .select()
+  .single()
+  .eq('slug', slug)
+
+  if (error) {
+    console.log(error, status)
+  }
+
+  console.log({data})  
+  return { data, error, status };
 };
 
-export const removePost = () => {
-  //Handle remove post here
+export const addPost = async (_, {arg: {title, slug, body}}) => {
+  
+  const { data, error, status } = await supabase
+  .from('posts')
+  .insert({title, slug, body})
+  .select()
+  .single()
+
+  if (error) {
+    console.log(error, status)
+  }
+
+  console.log({data})  
+  return { data, error, status };
+};
+
+export const removePost = async ({ slug }) => {
+  const { data, error, status } = await supabase
+  .from('posts')
+  .delete()
+  .eq('slug', slug)
+
+  if (error) {
+    console.log(error, status)
+  }
+
+  console.log({data})  
+  return { data, error, status };
 };
 
 export const editPost = () => {
