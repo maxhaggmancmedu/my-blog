@@ -1,5 +1,9 @@
 import { useRouter } from "next/router";
 import BlogEditor from "../../../../components/blog-editor";
+import { editPost } from "../../../../api-routes/posts";
+import useSWRMutation from "swr/mutation";
+import { cacheKey } from "../..";
+
 
 const mockData = {
   title: "Community-Messaging Fit",
@@ -12,8 +16,20 @@ export default function EditBlogPost() {
   /* Use this slug to fetch the post from the database */
   const { slug } = router.query;
 
-  const handleOnSubmit = ({ editorContent, titleInput, image }) => {
+  const { trigger: editTrigger } = useSWRMutation(cacheKey, () => editPost({ slug }));
+
+  const handleOnSubmit = async ({ editorContent, titleInput, image }) => {
     console.log({ editorContent, titleInput, image, slug });
+    const { data, status, error } = await editTrigger({
+      body: editorContent,
+      title: titleInput,   
+      image,
+      slug 
+    });
+
+    if (!error) {
+      router.push(`/blog/${slug}`)
+    }
   };
 
   return (

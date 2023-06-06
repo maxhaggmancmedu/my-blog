@@ -5,7 +5,7 @@ import AddComment from "./partials/add-comment";
 import Button from "@components/button";
 import Heading from "@components/heading";
 import BlogImageBanner from "@components/blog-image-banner";
-import { getPost, removePost,editPost } from "../../../api-routes/posts";
+import { getPost, removePost, editPost } from "../../../api-routes/posts";
 import { cacheKey } from "..";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -24,6 +24,8 @@ export default function BlogPost() {
 
     const {data, status}  = await deleteTrigger({ slug });
 
+    router.push(`/blog`);
+
     console.log(data, status)
   
 
@@ -36,22 +38,11 @@ export default function BlogPost() {
 
   
 
-  // const { trigger: editTrigger } = useSWRMutation(cacheKey, editCharacter, {
-    
-  // });
+  
 
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, () => removePost({ slug }));
 
-  const handleEditCharacter = async ({ id, name }) => {
-    const { data, status } = await editTrigger({ id, name });
-
-    if (status !== 200) {
-      setToaster({
-        message: data.message,
-        type: "error",
-      });
-    }
-  };
+  
 
   return (
     <>
