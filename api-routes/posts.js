@@ -44,11 +44,11 @@ export const addPost = async (_, {arg: {title, slug, body}}) => {
   return { data, error, status };
 };
 
-export const removePost = async ({ slug }) => {
+export const removePost = async (_, {arg: id }) => {
   const { data, error, status } = await supabase
   .from('posts')
   .delete()
-  .eq('slug', slug)
+  .eq('id', id)
 
   if (error) {
     console.log(error, status)

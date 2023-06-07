@@ -17,44 +17,34 @@ export default function BlogPost() {
 
   /* Use this slug to fetch the post from the database */
   const { slug } = router.query;
-
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
+
+  const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, removePost);
 
   const handleDeletePost = async () => {
 
-    const {data, status}  = await deleteTrigger({ slug });
+    const { status, error}  = await deleteTrigger(data.id);
 
     router.push(`/blog`);
 
-    console.log(data, status)
-  
-
-    console.log({ id: post.id });
   };
 
   const handleEditPost = () => {
     router.push(`/blog/${slug}/edit`);
   };
 
-  
-
-  
-
-  const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, () => removePost({ slug }));
-
-  
 
   return (
     <>
       <section className={styles.container}>
-        <Heading>{data.title}</Heading>
+        <Heading>{data?.title}</Heading>
         {data?.image && <BlogImageBanner src={data.image} alt={data.title} />}
         <div className={styles.dateContainer}>
-          <time className={styles.date}>{data.createdAt}</time>
+          <time className={styles.date}>{data?.created_at}</time>
           <div className={styles.border} />
         </div>
-        <div dangerouslySetInnerHTML={{ __html: data.body }} />
-        <span className={styles.author}>Author: {data.author}</span>
+        <div dangerouslySetInnerHTML={{ __html: data?.body }} />
+        <span className={styles.author}>Author: {data?.author}</span>
 
         {/* The Delete & Edit part should only be showed if you are authenticated and you are the author */}
         <div className={styles.buttonContainer}>
