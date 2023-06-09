@@ -58,12 +58,15 @@ export const removePost = async (_, {arg: id }) => {
   return { data, error, status };
 };
 
-export const editPost = async (_, {arg: {title, body, image, slug} }) => {
+export const editPost = async (_, {arg: {title, body, image, slug, id} }) => {
 const { data, error, status } = await supabase
 .from('posts')
-.update({title, body, image})
-.eq('slug', slug)
+.update({title, body, image, slug})
+.eq('id', id)
 .select()
+.single()
+
+console.log({data}) 
 
 return { data, error, status}
 

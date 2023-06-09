@@ -4,6 +4,7 @@ import { editPost } from "../../../../api-routes/posts";
 import useSWRMutation from "swr/mutation";
 import { cacheKey } from "../..";
 import useSWR from 'swr'
+import { createSlug } from "../../../../utils/createSlug";
 
 const mockData = {
   title: "Community-Messaging Fit",
@@ -18,16 +19,21 @@ export default function EditBlogPost() {
   const { slug } = router.query;
   
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
-
+  const  id  = data.id
+  
   const { trigger: editTrigger } = useSWRMutation(cacheKey, editPost);
 
   const handleOnSubmit = async ({ editorContent, titleInput, image }) => {
-    console.log({ editorContent, titleInput, image, slug });
+    
+    const newSlug = await titleInput
+    const slug = createSlug(newSlug)
+    
     const { data, status, error } = await editTrigger({
-      body: editorContent,
       title: titleInput,   
+      body: editorContent,
       image,
-      slug 
+      slug,
+      id
     });
 
     if (!error) {
