@@ -53,10 +53,10 @@ export default function BlogPost() {
         </div>
       </section>
 
-      {/* <Comments postId={post.id} /> */}
+      <Comments postId={data.id} />
 
       {/* This component should only be displayed if a user is authenticated */}
-      {/* <AddComment postId={post.id} /> */}
+      <AddComment postId={data.id} />
     </>
   );
 }
