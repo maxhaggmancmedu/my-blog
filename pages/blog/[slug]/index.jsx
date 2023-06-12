@@ -10,6 +10,7 @@ import { cacheKey } from "..";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import CreatePost from "../../create-post";
+import { useUser } from "@supabase/auth-helpers-react";
 
 
 export default function BlogPost() {
@@ -18,7 +19,14 @@ export default function BlogPost() {
   /* Use this slug to fetch the post from the database */
   const { slug } = router.query;
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
+  const user = useUser()
+  
+  console.log(user)
+  console.log(data)
 
+  const isAuthor = user.id === data.user_id ? true : false
+  
+  
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, removePost);
 
   const handleDeletePost = async () => {
@@ -44,19 +52,19 @@ export default function BlogPost() {
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: data?.body }} />
-        <span className={styles.author}>Author: {data?.author}</span>
+        <span className={styles.author}>Author: {user?.email}</span>
 
         {/* The Delete & Edit part should only be showed if you are authenticated and you are the author */}
-        <div className={styles.buttonContainer}>
+        {isAuthor && <div className={styles.buttonContainer}>
           <Button onClick={handleDeletePost}>Delete</Button>
           <Button onClick={handleEditPost}>Edit</Button>
-        </div>
+        </div>}
       </section>
 
-      <Comments postId={data.id} />
+      <Comments postId={data?.id} />
 
       {/* This component should only be displayed if a user is authenticated */}
-      <AddComment postId={data.id} />
+      <AddComment postId={data?.id} />
     </>
   );
 }

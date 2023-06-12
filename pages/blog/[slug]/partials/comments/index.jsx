@@ -28,7 +28,7 @@ export default function Comments(/*{ postId }*/) {
 
   */
 
-  const postId = '0d017c44-3c9a-405f-bdc6-68848abad576'
+  // const postId = '0d017c44-3c9a-405f-bdc6-68848abad576'
 
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}`, () => getComments({ postId }));
 
@@ -37,7 +37,7 @@ export default function Comments(/*{ postId }*/) {
   return (
     <div className={styles.container}>
       <h2>Comments</h2>
-      {mockData.map((comment) => (
+      {data.map((comment) => (
         <Comment key={comment.id} {...comment} />
       ))}
     </div>

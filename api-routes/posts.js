@@ -26,11 +26,11 @@ export const getPost = async ({ slug }) => {
   return { data, error, status };
 };
 
-export const addPost = async (_, {arg: {title, slug, body}}) => {
+export const addPost = async (_, {arg: {title, slug, body, user_id}}) => {
   
   const { data, error, status } = await supabase
   .from('posts')
-  .insert({title, slug, body})
+  .insert({title, slug, body, user_id})
   .select()
   .single()
 

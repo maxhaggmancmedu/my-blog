@@ -5,6 +5,7 @@ import useSWRMutation from "swr/mutation";
 import { cacheKey } from "../..";
 import useSWR from 'swr'
 import { createSlug } from "../../../../utils/createSlug";
+import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 
 const mockData = {
   title: "Community-Messaging Fit",
@@ -52,4 +53,32 @@ export default function EditBlogPost() {
       onSubmit={handleOnSubmit}
     />
   );
+}
+
+export const getServerSideProps = async (ctx) => {
+  const supabase = createPagesServerClient(ctx)
+  const { slug } = ctx.params;
+
+  const { data: { session }} = await supabase.auth.getSession()
+
+  const { data } = await supabase
+  .from('posts')
+  .select()
+  .single()
+  .eq('slug', slug) 
+
+  const isAuthor = data.user_id === session.user.id
+
+  if (!isAuthor) {
+    return {
+      redirect: {
+        destination: `/blog/${slug}`,
+        permanent: true
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }
