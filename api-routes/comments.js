@@ -12,14 +12,14 @@ export const getComments = async ({ postId }) => {
   }
 
   console.log({data})  
-  return { data, error, status };
+  return { data };
 };
 
-export const addComment = async (_, {arg: {comment, author}}) => {
+export const addComment = async (_, {arg: {comment, author, post_id, user_id}}) => {
   //Handle add comment here
   const { data, error, status } = await supabase
   .from('comments')
-  .insert({comment, author})
+  .insert({comment, author, post_id, user_id})
   .select()
   .single()
 
@@ -31,16 +31,19 @@ export const addComment = async (_, {arg: {comment, author}}) => {
   return { data, error, status };
 };
 
-export const removeComment = async (_, {arg: {comment, author}}) => {
+export const removeComment = async (_, {arg: { id }}) => {
   //Handle remove comment here
-  const { data, error, status } = await supabase
-.from('posts')
-.update({arg: {comment, author}})
+  console.log(id)
+const { data, error, status } = await supabase
+.from('comments')
+.delete()
 .eq('id', id)
-.select()
-.single()
 
-console.log({data}) 
+if (error) {
+  console.log(error, status)
+}
+
+console.log({data, status}) 
 
 return { data, error, status}
 };

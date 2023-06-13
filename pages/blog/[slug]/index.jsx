@@ -11,7 +11,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import CreatePost from "../../create-post";
 import { useUser } from "@supabase/auth-helpers-react";
-
+export let postAuthor;
 
 export default function BlogPost() {
   const router = useRouter();
@@ -22,7 +22,12 @@ export default function BlogPost() {
   const user = useUser()
   
   console.log(user)
+  
   console.log(data)
+   postAuthor = data.user_id
+  // export const postAuthor 
+  
+  
 
   const isAuthor = user.id === data.user_id ? true : false
   
@@ -41,7 +46,7 @@ export default function BlogPost() {
     router.push(`/blog/${slug}/edit`);
   };
 
-
+  
   return (
     <>
       <section className={styles.container}>
@@ -61,10 +66,11 @@ export default function BlogPost() {
         </div>}
       </section>
 
-      <Comments postId={data?.id} />
+      <Comments postId={data?.id} userId={data?.user_id}/>
 
       {/* This component should only be displayed if a user is authenticated */}
       <AddComment postId={data?.id} />
     </>
   );
 }
+
