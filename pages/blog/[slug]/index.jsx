@@ -12,6 +12,7 @@ import useSWRMutation from "swr/mutation";
 import CreatePost from "../../create-post";
 import { useUser } from "@supabase/auth-helpers-react";
 export let postAuthor;
+import { createUsername } from "../../../utils/createUsername";
 
 export default function BlogPost() {
   const router = useRouter();
@@ -21,32 +22,22 @@ export default function BlogPost() {
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
   const user = useUser()
   
-  console.log(user)
-  
-  console.log(data)
-   postAuthor = data.user_id
-  // export const postAuthor 
-  
-  
-
+  postAuthor = data.user_id
+   
+  const userName = createUsername(user.email)
   const isAuthor = user.id === data.user_id ? true : false
-  
   
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, removePost);
 
   const handleDeletePost = async () => {
-
     const { status, error}  = await deleteTrigger(data.id);
-
     router.push(`/blog`);
-
   };
 
   const handleEditPost = () => {
     router.push(`/blog/${slug}/edit`);
   };
 
-  
   return (
     <>
       <section className={styles.container}>
@@ -57,7 +48,7 @@ export default function BlogPost() {
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: data?.body }} />
-        <span className={styles.author}>Author: {user?.email}</span>
+        <span className={styles.author}>Author: {userName}</span>
 
         {/* The Delete & Edit part should only be showed if you are authenticated and you are the author */}
         {isAuthor && <div className={styles.buttonContainer}>

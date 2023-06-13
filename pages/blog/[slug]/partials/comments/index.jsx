@@ -10,16 +10,10 @@ export default function Comments({ postId }) {
   /* 
   Here is a good place to fetch the comments from the database that has a 
   foreign key relation to the post.
-  
-
   */
 
-  
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}`, () => getComments({ postId }));
   
-
-  
-
   console.log(data)
 
   return (

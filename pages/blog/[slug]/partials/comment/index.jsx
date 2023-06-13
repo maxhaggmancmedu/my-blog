@@ -5,12 +5,14 @@ import useSWRMutation from 'swr/mutation'
 import { cacheKey } from "../comments/index";
 import { useUser } from "@supabase/auth-helpers-react";
 import { postAuthor } from "../..";
+import { createUsername } from "../../../../../utils/createUsername";
 
 export default function Comment({ comment, created_at, author, id, user_id }) {
 
   const user = useUser()
-  
   const isAuthorized = user.id === user_id || user.id === postAuthor ? true : false
+
+  const userName = createUsername(author)
   
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${id}`, removeComment);
 
@@ -21,7 +23,7 @@ export default function Comment({ comment, created_at, author, id, user_id }) {
   return (
     <div className={styles.container}>
       <p>{comment}</p>
-      <p className={styles.author}>{author}</p>
+      <p className={styles.author}>{userName}</p>
       <time className={styles.date}>{created_at}</time>
 
       {/* The Delete part should only be showed if you are authenticated and you are the author */}

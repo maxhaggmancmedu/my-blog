@@ -10,8 +10,7 @@ export const getComments = async ({ postId }) => {
   if (error) {
     console.log(error, status)
   }
-
-  console.log({data})  
+ 
   return { data };
 };
 
@@ -26,8 +25,7 @@ export const addComment = async (_, {arg: {comment, author, post_id, user_id}}) 
   if (error) {
     console.log(error, status)
   }
-
-  console.log({data})  
+ 
   return { data, error, status };
 };
 
@@ -42,8 +40,6 @@ const { data, error, status } = await supabase
 if (error) {
   console.log(error, status)
 }
-
-console.log({data, status}) 
 
 return { data, error, status}
 };
