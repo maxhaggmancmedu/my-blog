@@ -7,13 +7,6 @@ import useSWR from 'swr'
 import { createSlug } from "../../../../utils/createSlug";
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 
-const mockData = {
-  title: "Community-Messaging Fit",
-  body: "<p>This is a good community fit!</p>",
-  image:
-    "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/16:9/w_2123,h_1194,c_limit/phonepicutres-TA.jpg",
-};
-
 export default function EditBlogPost() {
   const router = useRouter();
   /* Use this slug to fetch the post from the database */
@@ -28,14 +21,16 @@ export default function EditBlogPost() {
     
     const newSlug = await titleInput
     const slug = createSlug(newSlug)
-    
-    const { data, status, error } = await editTrigger({
+
+    const updatedPost = {
       title: titleInput,   
       body: editorContent,
       image,
       slug,
       id
-    });
+    }
+    
+    const { data, status, error } = await editTrigger(updatedPost);
 
     if (!error) {
       router.push(`/blog/${slug}`)
@@ -46,7 +41,7 @@ export default function EditBlogPost() {
     <BlogEditor
       heading="Edit blog post"
       title={data.title}
-      src={mockData.image}
+      src={data.image}
       alt={data.title}
       content={data.body}
       buttonText="Save changes"

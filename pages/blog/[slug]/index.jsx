@@ -21,11 +21,11 @@ export default function BlogPost() {
   const { slug } = router.query;
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
   const user = useUser()
-  
-  postAuthor = data.user_id
+  console.log(user)
+  postAuthor = data?.user_id
    
-  const userName = createUsername(user.email)
-  const isAuthor = user.id === data.user_id ? true : false
+  // const userName = createUsername(user.email)
+  const isAuthor = user.id === data?.user_id ? true : false
   
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, removePost);
 
@@ -48,7 +48,7 @@ export default function BlogPost() {
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: data?.body }} />
-        <span className={styles.author}>Author: {userName}</span>
+        {/* <span className={styles.author}>Author: {userName}</span> */}
 
         {/* The Delete & Edit part should only be showed if you are authenticated and you are the author */}
         {isAuthor && <div className={styles.buttonContainer}>

@@ -18,14 +18,17 @@ export default function CreatePost() {
   const handleOnSubmit = async ({ editorContent, titleInput, image }) => {
     const slug = createSlug(titleInput);
 
-    console.log({ editorContent, titleInput, image, slug });
-
-    const {status, error } = await addTrigger({
+    const newPost = {
       body: editorContent,
       title: titleInput,
       slug,
-      user_id: user.id
-    })
+      user_id: user.id,
+      image
+    }
+
+    const {status, error } = await addTrigger(newPost)
+
+    console.log(newPost);
 
     if (!error) {
       router.push(`/blog/${slug}`)
