@@ -13,7 +13,7 @@ export default function EditBlogPost() {
   const { slug } = router.query;
   
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
-  const  id  = data.id
+  const id = data.id
   
   const { trigger: editTrigger } = useSWRMutation(cacheKey, editPost);
 
