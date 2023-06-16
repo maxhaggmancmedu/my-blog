@@ -6,11 +6,16 @@ import { cacheKey } from "../comments/index";
 import { useUser } from "@supabase/auth-helpers-react";
 import { postAuthor } from "../..";
 import { createUsername } from "../../../../../utils/createUsername";
+import { useState } from "react";
 
 export default function Comment({ comment, created_at, author, id, user_id }) {
-
+  let isAuthorized = false
+  
   const user = useUser()
-  const isAuthorized = user.id === user_id || user.id === postAuthor ? true : false
+
+  if (user) {
+    isAuthorized = user.id === user_id || user.id === postAuthor ? true : false
+  }
 
   const userName = createUsername(author)
   

@@ -13,6 +13,9 @@ import CreatePost from "../../create-post";
 import { useUser } from "@supabase/auth-helpers-react";
 export let postAuthor;
 import { createUsername } from "../../../utils/createUsername";
+import { formatDate } from "../../../utils/formatDate";
+import { useState } from "react";
+
 
 export default function BlogPost() {
   const router = useRouter();
@@ -21,11 +24,16 @@ export default function BlogPost() {
   const { slug } = router.query;
   const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}${slug}`, () => getPost({ slug }));
   const user = useUser()
-  console.log(user)
+  
   postAuthor = data?.user_id
-   
-  // const userName = createUsername(user.email)
-  const isAuthor = user.id === data?.user_id ? true : false
+
+  let isAuthor = false;
+
+  //   const { formattedDate } = formatDate(data?.created_at);
+
+  if (user) {
+    isAuthor = user.id === data?.user_id ? true : false
+  }
   
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${slug}`, removePost);
 
