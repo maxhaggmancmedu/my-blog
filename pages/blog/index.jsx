@@ -4,6 +4,7 @@ import Heading from "@components/heading";
 import { getPosts } from "../../api-routes/posts";
 import useSWR from "swr";
 export const cacheKey = "/api/posts";
+import Search from "../../components/search/index";
 
 export default function Blog() {
     const { data: { data = [] } = {}, error } = useSWR(cacheKey, getPosts);
@@ -11,6 +12,7 @@ export default function Blog() {
   return (
     <section>
       <Heading>Blog</Heading>
+      <Search blogPosts={data} />
       {data.map((post) => (
         <Link
           key={post.slug}
