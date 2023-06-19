@@ -4,16 +4,33 @@ import Heading from "@components/heading";
 import { getPosts } from "../../api-routes/posts";
 import useSWR from "swr";
 export const cacheKey = "/api/posts";
-import Search from "../../components/search/index";
+import { useState } from "react";
+import classNames from "classnames";
 
-export default function Blog() {
+const getFilteredPosts = (query, posts) => {
+  if (!query) {
+      return posts
+  }
+  return posts.filter(post => post.title.includes(query))
+}
+
+export default function Blog(className) {
     const { data: { data = [] } = {}, error } = useSWR(cacheKey, getPosts);
+
+    const [searchQuery, setSearchQuery] = useState('')
+    
+    const filteredPosts = getFilteredPosts(searchQuery, data)
+
+    console.log(filteredPosts)
   
   return (
     <section>
       <Heading>Blog</Heading>
-      <Search blogPosts={data} />
-      {data.map((post) => (
+      <form className={styles.form}>
+        <label style={{textTransform: 'uppercase', fontWeight: '600'}} htmlFor='search'>Search blogs</label>
+        <input id="search" placeholder="Search" className={classNames(styles.container)} onChange={(e) => setSearchQuery(e.target.value)} />
+      </form>
+      {filteredPosts.map((post) => (
         <Link
           key={post.slug}
           className={styles.link}
