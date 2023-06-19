@@ -1,36 +1,48 @@
 import Link from "next/link";
 import styles from "./blog.module.css";
 import Heading from "@components/heading";
-import { getPosts } from "../../api-routes/posts";
+import { getFilteredPosts, getPosts } from "../../api-routes/posts";
 import useSWR from "swr";
 export const cacheKey = "/api/posts";
 import { useState } from "react";
 import classNames from "classnames";
+import useSWRMutation from "swr/mutation"
+import { useEffect } from "react";
 
-const getFilteredPosts = (query, posts) => {
-  if (!query) {
-      return posts
-  }
-  return posts.filter(post => post.title.includes(query))
-}
-
-export default function Blog(className) {
-    const { data: { data = [] } = {}, error } = useSWR(cacheKey, getPosts);
-
+export default function Blog() {
+    const { data: { data = [] } = {}, error, isLoading } = useSWR(cacheKey, getPosts);
+    const [displayData, setDisplayData] = useState([])    
     const [searchQuery, setSearchQuery] = useState('')
-    
-    const filteredPosts = getFilteredPosts(searchQuery, data)
 
-    console.log(filteredPosts)
+    useEffect(() => {
+      if (data) {
+        setDisplayData(data);
+      }
+    }, [data]);
+    
+    const { trigger: getFilteredPostsTrigger, isMutating } = useSWRMutation(
+      cacheKey,
+      getFilteredPosts
+    );
   
+    const handleOnSubmit = async (e) => {
+      e.preventDefault()
+      const {data, status, error } = await getFilteredPostsTrigger(searchQuery)
+      
+      setDisplayData(data)
+    };
+    
   return (
     <section>
       <Heading>Blog</Heading>
       <form className={styles.form}>
         <label style={{textTransform: 'uppercase', fontWeight: '600'}} htmlFor='search'>Search blogs</label>
+        <div className={styles.inputContainer}>
         <input id="search" placeholder="Search" className={classNames(styles.container)} onChange={(e) => setSearchQuery(e.target.value)} />
+        <button className={styles.button} onClick={handleOnSubmit}>Search</button>
+        </div>
       </form>
-      {filteredPosts.map((post) => (
+      {displayData?.map((post) => (
         <Link
           key={post.slug}
           className={styles.link}
@@ -42,6 +54,9 @@ export default function Blog(className) {
           </div>
         </Link>
       ))}
+      {displayData.length === 0 && !isLoading && 
+      <div style={{color: 'red'}}>No posts found</div>
+      }
     </section>
   );
 }

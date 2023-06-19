@@ -92,3 +92,13 @@ export const editPost = async (_, {arg: updatedPost }) => {
   return { data, error, status}
 
 };
+
+export const getFilteredPosts = async (_, {arg: searchQuery }) => {
+  
+const { data, error } = await supabase
+  .from('posts')
+  .select()
+  .ilike('title', `%${searchQuery}%`)
+
+  return { data, error };
+};
