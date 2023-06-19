@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { getComments } from "../../../../../api-routes/comments";
 import { useEffect } from "react";
 
-const cacheKey = 'comments'
+export const cacheKey = 'comments'
 
 export default function Comments({ postId }) {
   /* 
@@ -12,7 +12,7 @@ export default function Comments({ postId }) {
   foreign key relation to the post.
   */
 
-  const { data: { data = [] } = {}, error } = useSWR(`${cacheKey}`, () => getComments({ postId }));
+  const { data: { data = [] } = {}, error } = useSWR(postId ? `${cacheKey}${postId}`: null, () => getComments({ postId }));
   
   console.log(data)
 
@@ -20,7 +20,7 @@ export default function Comments({ postId }) {
     <div className={styles.container}>
       <h2>Comments</h2>
       {data?.map((comment) => (
-        <Comment key={comment.id} {...comment} />
+        <Comment key={comment.id} {...comment} postId={postId} />
       ))}
     </div>
   );

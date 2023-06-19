@@ -8,7 +8,7 @@ import { postAuthor } from "../..";
 import { createUsername } from "../../../../../utils/createUsername";
 import { useState } from "react";
 
-export default function Comment({ comment, created_at, author, id, user_id }) {
+export default function Comment({ comment, created_at, author, id, user_id, postId }) {
   let isAuthorized = false
   
   const user = useUser()
@@ -19,11 +19,12 @@ export default function Comment({ comment, created_at, author, id, user_id }) {
 
   const userName = createUsername(author)
   
-  const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${id}`, removeComment);
+  const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${postId}`, removeComment);
 
   const handleDelete = async () => {
     console.log({ id, comment, author, user_id });
     const {status, error}  = await deleteTrigger({id});
+    console.log(error)
   };
   return (
     <div className={styles.container}>
