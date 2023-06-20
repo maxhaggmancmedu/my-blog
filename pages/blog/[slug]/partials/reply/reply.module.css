@@ -1,12 +1,17 @@
 .container {
     display: flex;
+    gap: 16px;
+}
+
+.replyContent {
+    display: flex;
     flex-direction: column;
     gap: 3px;
     margin-left: 24px;
     margin-top: 8px;
 }
 
-.container > * {
+.replyContent > * {
     margin: 0;
     font-size: 12px;
 }
@@ -19,3 +24,7 @@
     font-family: monospace;
 }
 
+.button {
+    height: 29px;
+    margin-top: 18px;
+}

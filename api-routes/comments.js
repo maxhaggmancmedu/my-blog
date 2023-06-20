@@ -36,10 +36,7 @@ const { data, error, status } = await supabase
 .from('comments')
 .delete()
 .eq('id', id)
-console.log('här')
-// if (error) {
-//   console.log(error, status)
-// }
+
 console.log({error ,status})
 
 return { data, error, status}

@@ -30,7 +30,6 @@ export default function Blog() {
       const {data: filteredData, status, error } = await getFilteredPostsTrigger(searchQuery)
       
       setDisplayData(filteredData)
-      console.log(displayData)
 
       if (filteredData.length === 0) {
         const timeout = setTimeout(() => {

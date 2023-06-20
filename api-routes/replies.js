@@ -29,3 +29,14 @@ export const addReply = async (_, {arg: {reply, author, comment_id, user_id}}) =
    
     return { data, error, status };
 };
+
+export const removeReply = async (_, {arg: { id }}) => {
+  //Handle remove comment here
+  console.log(id)
+  const { data, error, status } = await supabase
+  .from('replies')
+  .delete()
+  .eq('id', id)
+
+return { data, error, status}
+};
