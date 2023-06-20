@@ -27,15 +27,26 @@ export default function Blog() {
   
     const handleOnSubmit = async (e) => {
       e.preventDefault()
-      const {data, status, error } = await getFilteredPostsTrigger(searchQuery)
+      const {data: filteredData, status, error } = await getFilteredPostsTrigger(searchQuery)
       
-      setDisplayData(data)
+      setDisplayData(filteredData)
+      console.log(displayData)
+
+      if (filteredData.length === 0) {
+        const timeout = setTimeout(() => {
+          setSearchQuery('')
+          setDisplayData(data)
+          document.getElementById("form").reset()
+        }, 1000)
+      }
     };
+
+    console.log(searchQuery)
     
   return (
     <section>
       <Heading>Blog</Heading>
-      <form className={styles.form}>
+      <form id="form" className={styles.form}>
         <label style={{textTransform: 'uppercase', fontWeight: '600'}} htmlFor='search'>Search blogs</label>
         <div className={styles.inputContainer}>
         <input id="search" placeholder="Search" className={classNames(styles.container)} onChange={(e) => setSearchQuery(e.target.value)} />
