@@ -14,14 +14,13 @@ import { formatDate } from "../../../../../utils/formatDate";
 export default function Comment({ comment, created_at, author, id, user_id, postId, postUserId }) {
   let isAuthorized = false
   const [replyActive, setReplyActive] = useState(false)
+  const [repliesOpen, setRepliesOpen] = useState(false)
   
   const user = useUser()
 
   if (user) {
     isAuthorized = user.id === user_id || user.id === postAuthor ? true : false
   }
-
-  console.log(comment)
 
   const userName = createUsername(author)
   
@@ -45,8 +44,9 @@ export default function Comment({ comment, created_at, author, id, user_id, post
         {isAuthorized && !replyActive && <Button onClick={handleDelete}>Delete</Button>}
         {!replyActive && <Button onClick={() => setReplyActive(!replyActive)}>Reply</Button>}
       </div>
-      {replyActive && <AddReply replyActive={replyActive} setReplyActive={setReplyActive} commentId={id} />}
-      <Replies replyActive={replyActive} commentId={id} userId={user_id} postUserId={postUserId} />
+      {replyActive && <AddReply replyActive={replyActive} setReplyActive={setReplyActive} commentId={id} repliesOpen={repliesOpen} setRepliesOpen={setRepliesOpen}/>}
+      <Replies replyActive={replyActive} commentId={id} userId={user_id} postUserId={postUserId} repliesOpen={repliesOpen} setRepliesOpen={setRepliesOpen} />
+      <div className={styles.brake} />
     </div>
   );
 }

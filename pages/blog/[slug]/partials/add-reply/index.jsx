@@ -9,7 +9,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 import useSWRMutation from 'swr/mutation'
 import { cacheKey } from '../replies';
 
-export default function AddReply({ replyActive, setReplyActive, commentId }) {
+export default function AddReply({ replyActive, setReplyActive, commentId, repliesOpen, setRepliesOpen }) {
 
     const formRef = useRef(); // create a reference
     const user = useUser()
@@ -51,8 +51,7 @@ export default function AddReply({ replyActive, setReplyActive, commentId }) {
           <Textarea className={styles.textarea} placeholder='Comment' name='reply' />
           <div className={styles.buttonsContainer}>
             <Button className={styles.button} onClick={() => setReplyActive(!replyActive)}>Cancel</Button>
-            <Button className={styles.button} type='submit'>Submit</Button>
-
+            <Button className={styles.button} onClick={() => setRepliesOpen(true)} type='submit'>Submit</Button>
           </div>
         </form>
     </>

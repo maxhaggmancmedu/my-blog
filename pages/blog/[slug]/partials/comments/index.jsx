@@ -16,7 +16,7 @@ export default function Comments({ postId, userId }) {
 
   return (
     <div className={styles.container}>
-      <h2>Comments</h2>
+      <h2>Comments ({data?.length})</h2>
       {data?.map((comment) => (
         <Comment key={comment.id} {...comment} postId={postId} postUserId={userId} />
       ))}

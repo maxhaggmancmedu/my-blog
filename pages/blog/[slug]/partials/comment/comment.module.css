@@ -17,3 +17,10 @@
   margin-top: 10px;
   gap: 5px;
 }
+
+.brake {
+  background-color: black;
+  height: 1px;
+  margin-top: 10px;
+  width: 500px;
+}
