@@ -7,7 +7,7 @@ import { useRef } from 'react';
 import { addReply } from '../../../../../api-routes/replies';
 import { useUser } from '@supabase/auth-helpers-react';
 import useSWRMutation from 'swr/mutation'
-export const cacheKey = 'reply'
+import { cacheKey } from '../replies';
 
 export default function AddReply({ replyActive, setReplyActive, commentId }) {
 
