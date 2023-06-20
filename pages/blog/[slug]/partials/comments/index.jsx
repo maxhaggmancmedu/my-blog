@@ -13,8 +13,6 @@ export default function Comments({ postId }) {
   */
 
   const { data: { data = [] } = {}, error } = useSWR(postId ? `${cacheKey}${postId}`: null, () => getComments({ postId }));
-  
-  console.log(data)
 
   return (
     <div className={styles.container}>

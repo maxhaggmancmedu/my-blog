@@ -22,7 +22,7 @@ export default function AddComment({ postId }) {
     event.preventDefault();
     // Alternative way to get the form data
     const formData = new FormData(event.target);
-
+    console.log(formData)
     const { author, comment } = Object.fromEntries(formData);
 
     /* 

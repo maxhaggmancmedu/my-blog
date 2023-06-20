@@ -29,7 +29,6 @@ export default function BlogPost() {
 
   let isAuthor = false;
 
-  //   const { formattedDate } = formatDate(data?.created_at);
 
   if (user) {
     isAuthor = user.id === data?.user_id ? true : false
@@ -45,6 +44,8 @@ export default function BlogPost() {
   const handleEditPost = () => {
     router.push(`/blog/${slug}/edit`);
   };
+
+  
 
   return (
     <>
