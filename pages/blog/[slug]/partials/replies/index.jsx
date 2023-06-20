@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export const cacheKey = 'replies'
 
-export default function Replies({replyActive, commentId }) {
+export default function Replies({replyActive, commentId, userId, postUserId }) {
   
   const { data: { data = [] } = {}, error } = useSWR(commentId ? `${cacheKey}${commentId}`: null, () => getReplies({ commentId }));
 
@@ -15,7 +15,7 @@ export default function Replies({replyActive, commentId }) {
         {!replyActive && <div className={styles.container}>
         {data.length > 0 && <h2 className={styles.h2}>Replies</h2>}
         {data?.map((reply) => (
-            <Reply key={reply.id} {...reply} commentId={commentId} />
+            <Reply key={reply.id} {...reply} commentId={commentId} userId={userId} postUserId={postUserId} />
         ))}
         </div>}
     </>

@@ -5,14 +5,19 @@ import { cacheKey } from '../replies'
 import useSWRMutation from 'swr/mutation'
 import { removeReply } from '../../../../../api-routes/replies'
 import Button from '@components/button'
+import { useUser } from '@supabase/auth-helpers-react'
 
-export default function Reply({...reply}) {
+export default function Reply({userId: commentUserId, commentId, postUserId, ...reply}) {
 
+    const user = useUser()
+    let isAuthorized = false
     const { formattedDate } = formatDate(reply?.created_at)
 
-    console.log(reply.id)
+    if (user) {
+        isAuthorized = user.id === reply.user_id || user.id === commentUserId || user.id === postUserId ? true : false
+    }
 
-    const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${reply.id}`, removeReply);
+    const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${commentId}`, removeReply);
 
     const handleDelete = async () => {
         const {status, error}  = await deleteTrigger({id: reply.id});
@@ -25,7 +30,7 @@ export default function Reply({...reply}) {
                 <p className={styles.author}>{reply.author}</p>
                 <time className={styles.date}>{formattedDate}</time>
             </div>
-            <Button className={styles.button} onClick={handleDelete}>Delete</Button>
+            {isAuthorized && <Button className={styles.button} onClick={handleDelete}>Delete</Button>}
         </div>
     )
 }

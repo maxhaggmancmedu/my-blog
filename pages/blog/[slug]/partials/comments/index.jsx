@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export const cacheKey = 'comments'
 
-export default function Comments({ postId }) {
+export default function Comments({ postId, userId }) {
   /* 
   Here is a good place to fetch the comments from the database that has a 
   foreign key relation to the post.
@@ -18,7 +18,7 @@ export default function Comments({ postId }) {
     <div className={styles.container}>
       <h2>Comments</h2>
       {data?.map((comment) => (
-        <Comment key={comment.id} {...comment} postId={postId} />
+        <Comment key={comment.id} {...comment} postId={postId} postUserId={userId} />
       ))}
     </div>
   );
