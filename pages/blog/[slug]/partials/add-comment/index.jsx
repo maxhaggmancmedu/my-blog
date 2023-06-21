@@ -34,7 +34,7 @@ export default function AddComment({ postId }) {
       author,
       comment,
       post_id: postId,
-      user_id: user.id
+      user_id: user?.id
     })
 
     // Reset the form after submission?
