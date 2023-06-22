@@ -21,8 +21,6 @@ export default function Comment({ comment, created_at, author, id, user_id, post
   if (user) {
     isAuthorized = user.id === user_id || user.id === postAuthor ? true : false
   }
-
-  const userName = createUsername(author)
   
   const { trigger: deleteTrigger } = useSWRMutation(`${cacheKey}${postId}`, removeComment);
 
@@ -30,14 +28,14 @@ export default function Comment({ comment, created_at, author, id, user_id, post
     const {status, error}  = await deleteTrigger({id});
   };
 
-  const { formattedDate } = formatDate(created_at)
+  // const { formattedDate } = formatDate(created_at)
   
 
   return (
     <div className={styles.container}>
       <p>{comment}</p>
-      <p className={styles.author}>{userName}</p>
-      <time className={styles.date}>{formattedDate}</time>
+      <p className={styles.author}>{author}</p>
+      <time className={styles.date}>{created_at}</time>
 
       {/* The Delete part should only be showed if you are authenticated and you are the author */}
       <div className={styles.buttonContainer}>

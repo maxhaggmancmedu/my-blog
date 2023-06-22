@@ -9,12 +9,9 @@ import { getPost, removePost, editPost } from "../../../api-routes/posts";
 import { cacheKey } from "..";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import CreatePost from "../../create-post";
 import { useUser } from "@supabase/auth-helpers-react";
 export let postAuthor;
-import { createUsername } from "../../../utils/createUsername";
-import { formatDate } from "../../../utils/formatDate";
-import { useState } from "react";
+
 
 
 export default function BlogPost() {
@@ -28,7 +25,6 @@ export default function BlogPost() {
   postAuthor = data?.user_id
 
   let isAuthor = false;
-
 
   if (user) {
     isAuthor = user.id === data?.user_id ? true : false
@@ -46,7 +42,6 @@ export default function BlogPost() {
   };
 
   
-
   return (
     <>
       <section className={styles.container}>
@@ -57,7 +52,6 @@ export default function BlogPost() {
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: data?.body }} />
-        {/* <span className={styles.author}>Author: {userName}</span> */}
 
         {/* The Delete & Edit part should only be showed if you are authenticated and you are the author */}
         {isAuthor && <div className={styles.buttonContainer}>

@@ -11,7 +11,7 @@ export default function Reply({userId: commentUserId, commentId, postUserId, ...
 
     const user = useUser()
     let isAuthorized = false
-    const { formattedDate } = formatDate(reply?.created_at)
+    // const { formattedDate } = formatDate(reply.created_at)
 
     if (user) {
         isAuthorized = user.id === reply.user_id || user.id === commentUserId || user.id === postUserId ? true : false
@@ -28,7 +28,7 @@ export default function Reply({userId: commentUserId, commentId, postUserId, ...
             <div className={styles.replyContent}>
                 <p>{reply.reply}</p>
                 <p className={styles.author}>{reply.author}</p>
-                <time className={styles.date}>{formattedDate}</time>
+                <time className={styles.date}>{reply.created_at}</time>
             </div>
             {isAuthorized && <Button className={styles.button} onClick={handleDelete}>Delete</Button>}
         </div>
