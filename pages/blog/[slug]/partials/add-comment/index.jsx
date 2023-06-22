@@ -22,13 +22,13 @@ export default function AddComment({ postId }) {
     event.preventDefault();
     // Alternative way to get the form data
     const formData = new FormData(event.target);
-    console.log(formData)
+    
     const { author, comment } = Object.fromEntries(formData);
 
     /* 
       Perhaps a good place to add a comment to the database that is associated with the blog post 😙
       */
-    console.log({ author, comment, postId });
+    
 
     const {status, error } = await addTrigger({
       author,

@@ -28,8 +28,6 @@ export default function AddReply({ replyActive, setReplyActive, commentId, repli
   
       const { author, reply } = Object.fromEntries(formData);
   
-      
-      console.log({ author, reply, commentId });
   
       const {status, error } = await addTrigger({
         author,

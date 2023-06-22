@@ -40,7 +40,7 @@ export default function Blog() {
       }
     };
 
-    console.log(searchQuery)
+    
     
   return (
     <section>

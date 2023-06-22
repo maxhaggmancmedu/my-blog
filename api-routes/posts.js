@@ -6,10 +6,6 @@ export const getPosts = async () => {
   .from('posts')
   .select()
 
-  if (error) {
-    console.log(error, status)
-  }
-
   return { data, error, status };
 };
 
@@ -19,10 +15,6 @@ export const getPost = async ({ slug }) => {
   .select()
   .single()
   .eq('slug', slug)
-
-  if (error) {
-    console.log(error, status)
-  }
 
   return { data, error, status };
 };
@@ -45,12 +37,6 @@ export const addPost = async (_, {arg: newPost}) => {
   .select()
   .single()
 
-  console.log(data)
-
-  if (error) {
-    console.log(error, status)
-  }
-
   return { data, error, status };
 };
 
@@ -59,10 +45,6 @@ export const removePost = async (_, {arg: id }) => {
   .from('posts')
   .delete()
   .eq('id', id)
-
-  if (error) {
-    console.log(error, status)
-  }
 
   return { data, error, status };
 };

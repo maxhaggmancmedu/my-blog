@@ -28,8 +28,6 @@ export default function CreatePost() {
 
     const {status, error } = await addTrigger(newPost)
 
-    console.log(newPost);
-
     if (!error) {
       router.push(`/blog/${slug}`)
     }
